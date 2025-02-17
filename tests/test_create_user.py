@@ -3,10 +3,7 @@ import json
 import requests
 
 from conftest import headers, get_user_data
-
-BASE_URL = "https://stellarburgers.nomoreparties.site"
-REGISTER_URL = BASE_URL + "/api/auth/register"
-LOGIN_URL = BASE_URL + "/api/auth/login"
+from urls import REGISTER_URL
 
 
 class TestCreateUser:

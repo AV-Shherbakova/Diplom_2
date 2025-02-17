@@ -3,7 +3,7 @@ import json
 import requests
 
 from conftest import headers, get_user_data
-from tests.test_create_user import REGISTER_URL, LOGIN_URL
+from urls import REGISTER_URL, LOGIN_URL
 
 
 class TestLogin:
