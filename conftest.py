@@ -1,27 +1,20 @@
 import json
-import random
-import string
 
 import pytest
+import requests
 
-
-def generate_random_string(length):
-    letters = string.ascii_lowercase
-    random_string = ''.join(random.choice(letters) for i in range(length))
-    return random_string
-
-
-@pytest.fixture
-def headers():
-    return {
-        'Content-Type': 'application/json'
-    }
+from constants import ACCESS_TOKEN
+from urls import REGISTER_URL, UPDATE_USER_INFO_URL
+from utils import get_auth_header, get_content_header, generate_user_create_str
 
 
 @pytest.fixture
-def get_user_data():
-    return json.dumps({
-        "name": "Анна",
-        "email": generate_random_string(9) + '@mail.ru',
-        "password": "123456789"
+def create_and_remove_user():
+    register_response = requests.post(REGISTER_URL, headers=get_content_header(), data=generate_user_create_str())
+    yield register_response
+    delete_body = json.dumps({
+        "email": register_response.json().get("email"),
     })
+    token = register_response.json().get(ACCESS_TOKEN)
+    auth_headers = get_auth_header(token)
+    requests.delete(UPDATE_USER_INFO_URL, headers=auth_headers, data=delete_body)
