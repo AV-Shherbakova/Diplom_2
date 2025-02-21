@@ -1,3 +1,5 @@
+import allure
+
 from conftest import create_and_remove_user
 from constants import PASSWORD, EMAIL, USER
 from utils import login_user
@@ -5,6 +7,7 @@ from utils import login_user
 
 class TestLogin:
 
+    @allure.title("Проверка логина зарегистрированным пользователем")
     def test_existing_user_login(self, create_and_remove_user):
         user = create_and_remove_user.json().get(USER)
         login_body = {
@@ -13,6 +16,7 @@ class TestLogin:
         }
         assert login_user(login_body).status_code == 200
 
+    @allure.title("Проверка ошибочного логина")
     def test_incorrect_user_data(self):
         payload = {
             "email": 4545,

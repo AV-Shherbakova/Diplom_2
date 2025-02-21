@@ -4,7 +4,7 @@ import string
 
 import requests
 
-from constants import PASSWORD
+from constants import PASSWORD, ID, CONTENT_HEADER
 from urls import LOGIN_URL, INGREDIENTS_URL
 
 
@@ -28,16 +28,12 @@ def get_auth_header(token: str):
     return {"Authorization": token}
 
 
-def get_content_header():
-    return {'Content-Type': 'application/json'}
-
-
 def login_user(payload: dict):
-    return requests.post(LOGIN_URL, headers=get_content_header(), data=json.dumps(payload))
+    return requests.post(LOGIN_URL, headers=CONTENT_HEADER, data=json.dumps(payload))
 
 
 def get_ingredients_response():
-    return requests.get(INGREDIENTS_URL, headers=get_content_header())
+    return requests.get(INGREDIENTS_URL, headers=CONTENT_HEADER)
 
 
 def get_user_data(email: str, name: str):
@@ -46,3 +42,11 @@ def get_user_data(email: str, name: str):
         "email": email,
         "password": PASSWORD
     }
+
+
+def get_random_ingredient_ids(ingredients: list, quantity: int):
+    ingredient_ids = []
+    for i in range(quantity):
+        idx = get_random_index_from_list(ingredients)
+        ingredient_ids.append(ingredients[idx].get(ID))
+    return ingredient_ids

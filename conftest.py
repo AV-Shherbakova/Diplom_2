@@ -3,14 +3,14 @@ import json
 import pytest
 import requests
 
-from constants import ACCESS_TOKEN
+from constants import ACCESS_TOKEN, CONTENT_HEADER
 from urls import REGISTER_URL, UPDATE_USER_INFO_URL
-from utils import get_auth_header, get_content_header, generate_user_create_str
+from utils import get_auth_header, generate_user_create_str
 
 
 @pytest.fixture
 def create_and_remove_user():
-    register_response = requests.post(REGISTER_URL, headers=get_content_header(), data=generate_user_create_str())
+    register_response = requests.post(REGISTER_URL, headers=CONTENT_HEADER, data=generate_user_create_str())
     yield register_response
     delete_body = json.dumps({
         "email": register_response.json().get("email"),
